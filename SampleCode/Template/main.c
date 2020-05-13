@@ -65,11 +65,11 @@ enum
 	state_PatternMove,
 #if defined (ENABLE_EXTRA_DEMO)	
 	state_ColorWheel,
-	state_AllColors = 49,		//a
+	state_AllColors ,//= 49,		//a
 #endif	
-	state_HeartBeat = 50,		//b
-	state_CircularRing = 51,	//c
-	state_FromAToB = 52,		//d
+	state_HeartBeat ,//= 50,		//b
+	state_CircularRing ,//= 51,	//c
+	state_FromAToB ,//= 52,		//d
 
 	state_Max,
 };
@@ -91,7 +91,7 @@ enum
 #define SPI_MASTER_OPENED_CH   				(1 << SPI_MASTER_TX_DMA_CH)
 
 uint8_t DataBuffer[LED_DATA_LEN] = {0};
-uint8_t DemoState = state_AllColors;
+uint8_t DemoState = state_Rainbow;	//state_AllColors;
 
 uint16_t Coloridx = 0;
 
@@ -1519,11 +1519,14 @@ void getBreathing(uint16_t time)
 
 void StateMachine()
 {
+	uint16_t i = 0;
+
 	if (DemoState++ >= state_Max)
 	{
 		DemoState = state_Default+1;
 	}
 //	DemoState = 0;	//quick test
+	printf("DemoState : %2d\r\n" , DemoState);
 
 	switch(DemoState)
 	{
@@ -1538,12 +1541,16 @@ void StateMachine()
 			break;
 
 		case state_TheaterChase:
-			getTheaterChase(30,colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
-//			getTheaterChase(60,0x00,0xFF,0x00);
-//			getTheaterChase(60,0x00,0x00,0xFF);
-//			delay_ms(120);
+			for (i = 0 ; i < 5; i++)
+			{
+				getTheaterChase(30,colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
+//				getTheaterChase(60,0x00,0xFF,0x00);
+//				getTheaterChase(60,0x00,0x00,0xFF);
+//				delay_ms(120);
 
-			setLED_ColorIdxChange();
+				setLED_ColorIdxChange();
+			}
+
 			break;
 
 		case state_TheaterChaseRainbow:
@@ -1557,21 +1564,31 @@ void StateMachine()
 			break;
 		
 		case state_AlternateColors:
-			getAlternateColors(128*500, 128, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2], colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
+			for (i = 0 ; i < 5; i++)
+			{		
+				getAlternateColors(128*500, 128, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2], colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
 
-			setLED_ColorIdxChange();
+				setLED_ColorIdxChange();
+
+			}
 			break;
 
 		case state_FullEmpty:
-			getFullEmpty(30, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
+			for (i = 0 ; i < 5; i++)
+			{
+				getFullEmpty(30, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
 
-			setLED_ColorIdxChange();
+				setLED_ColorIdxChange();
+			}
 			break;
 		
 		case state_PatternMove:
-			getPatternMove(50, 10, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
+			for (i = 0 ; i < 5; i++)
+			{
+				getPatternMove(50, 10, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
 
-			setLED_ColorIdxChange();
+				setLED_ColorIdxChange();
+			}
 			break;
 
 		#if defined (ENABLE_EXTRA_DEMO)
@@ -1588,21 +1605,31 @@ void StateMachine()
 		#endif	/*ENABLE_EXTRA_DEMO*/
 
 		case state_HeartBeat:
-			getHeartBeat(900, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
+			for (i = 0 ; i < 5; i++)
+			{		
+				getHeartBeat(900, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
 
-			setLED_ColorIdxChange();
+				setLED_ColorIdxChange();
+			}
+			
 			break;	
 
 		case state_CircularRing:
-			getCircularRing(30, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
-	
-			setLED_ColorIdxChange();
+			for (i = 0 ; i < 16; i++)
+			{			
+				getCircularRing(30, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
+		
+				setLED_ColorIdxChange();
+			}
 			break;	
 		
 		case state_FromAToB:
-			getFromAToB(512, 16, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2], colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
-		
-			setLED_ColorIdxChange();
+			for (i = 0 ; i < 256; i++)
+			{			
+				getFromAToB(512, 16, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2], colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
+			
+				setLED_ColorIdxChange();
+			}
 			break;	
 			
 	}

@@ -5,18 +5,18 @@
                           AREA ||i.GPIO_Init||, CODE, READONLY, ALIGN=2
 
                   GPIO_Init PROC
-;;;1662   
-;;;1663   void GPIO_Init (void)
+;;;1689   
+;;;1690   void GPIO_Init (void)
 000000  b510              PUSH     {r4,lr}
-;;;1664   {
-;;;1665       GPIO_SetMode(PB, BIT4, GPIO_PMD_OUTPUT);
+;;;1691   {
+;;;1692       GPIO_SetMode(PB, BIT4, GPIO_PMD_OUTPUT);
 000002  2201              MOVS     r2,#1
 000004  2110              MOVS     r1,#0x10
 000006  4802              LDR      r0,|L1.16|
 000008  f7fffffe          BL       GPIO_SetMode
-;;;1666   }
+;;;1693   }
 00000c  bd10              POP      {r4,pc}
-;;;1667   
+;;;1694   
                           ENDP
 
 00000e  0000              DCW      0x0000
@@ -26,8 +26,8 @@
                           AREA ||i.SYS_Init||, CODE, READONLY, ALIGN=2
 
                   SYS_Init PROC
-;;;1695   
-;;;1696   void SYS_Init(void)
+;;;1722   
+;;;1723   void SYS_Init(void)
 000000  b570              PUSH     {r4-r6,lr}
 000002  2059              MOVS     r0,#0x59
 000004  2116              MOVS     r1,#0x16
@@ -42,129 +42,129 @@
 000012  6823              LDR      r3,[r4,#0]
 000014  2b01              CMP      r3,#1
 000016  d1f9              BNE      |L2.12|
-;;;1697   {
-;;;1698       /* Unlock protected registers */
-;;;1699       SYS_UnlockReg();
-;;;1700   
-;;;1701       /* Enable HIRC clock (Internal RC 48MHz) */
-;;;1702       CLK_EnableXtalRC(CLK_PWRCON_OSC22M_EN_Msk);
+;;;1724   {
+;;;1725       /* Unlock protected registers */
+;;;1726       SYS_UnlockReg();
+;;;1727   
+;;;1728       /* Enable HIRC clock (Internal RC 48MHz) */
+;;;1729       CLK_EnableXtalRC(CLK_PWRCON_OSC22M_EN_Msk);
 000018  2004              MOVS     r0,#4
 00001a  f7fffffe          BL       CLK_EnableXtalRC
-;;;1703   
-;;;1704       /* Wait for HIRC clock ready */
-;;;1705       CLK_WaitClockReady(CLK_CLKSTATUS_OSC22M_STB_Msk);
+;;;1730   
+;;;1731       /* Wait for HIRC clock ready */
+;;;1732       CLK_WaitClockReady(CLK_CLKSTATUS_OSC22M_STB_Msk);
 00001e  2010              MOVS     r0,#0x10
 000020  f7fffffe          BL       CLK_WaitClockReady
-;;;1706   
-;;;1707       /* Enable external 12 MHz XTAL */
-;;;1708       CLK_EnableXtalRC(CLK_PWRCON_XTL12M_EN_Msk);
+;;;1733   
+;;;1734       /* Enable external 12 MHz XTAL */
+;;;1735       CLK_EnableXtalRC(CLK_PWRCON_XTL12M_EN_Msk);
 000024  2001              MOVS     r0,#1
 000026  f7fffffe          BL       CLK_EnableXtalRC
-;;;1709   
-;;;1710       /* Waiting for clock ready */
-;;;1711       CLK_WaitClockReady(CLK_CLKSTATUS_XTL12M_STB_Msk);
+;;;1736   
+;;;1737       /* Waiting for clock ready */
+;;;1738       CLK_WaitClockReady(CLK_CLKSTATUS_XTL12M_STB_Msk);
 00002a  2001              MOVS     r0,#1
 00002c  f7fffffe          BL       CLK_WaitClockReady
-;;;1712   
-;;;1713       /* Set core clock rate as 72 MHz from PLL */
-;;;1714       CLK_SetCoreClock(72000000);
+;;;1739   
+;;;1740       /* Set core clock rate as 72 MHz from PLL */
+;;;1741       CLK_SetCoreClock(72000000);
 000030  4826              LDR      r0,|L2.204|
 000032  f7fffffe          BL       CLK_SetCoreClock
-;;;1715   
-;;;1716       /* Select HCLK clock source as HIRC and HCLK source divider as 1 */
-;;;1717       CLK_SetHCLK(CLK_CLKSEL0_HCLK_S_HIRC, CLK_CLKDIV_HCLK(1));
+;;;1742   
+;;;1743       /* Select HCLK clock source as HIRC and HCLK source divider as 1 */
+;;;1744       CLK_SetHCLK(CLK_CLKSEL0_HCLK_S_HIRC, CLK_CLKDIV_HCLK(1));
 000036  2100              MOVS     r1,#0
 000038  2007              MOVS     r0,#7
 00003a  f7fffffe          BL       CLK_SetHCLK
-;;;1718   
-;;;1719       CLK_EnableModuleClock(UART0_MODULE);
+;;;1745   
+;;;1746       CLK_EnableModuleClock(UART0_MODULE);
 00003e  4d24              LDR      r5,|L2.208|
 000040  4628              MOV      r0,r5
 000042  f7fffffe          BL       CLK_EnableModuleClock
-;;;1720       CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART_S_HIRC, CLK_CLKDIV_UART(1));
+;;;1747       CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART_S_HIRC, CLK_CLKDIV_UART(1));
 000046  2103              MOVS     r1,#3
 000048  2200              MOVS     r2,#0
 00004a  0609              LSLS     r1,r1,#24
 00004c  4628              MOV      r0,r5
 00004e  f7fffffe          BL       CLK_SetModuleClock
-;;;1721   
-;;;1722       CLK_EnableModuleClock(TMR0_MODULE);
+;;;1748   
+;;;1749       CLK_EnableModuleClock(TMR0_MODULE);
 000052  4d20              LDR      r5,|L2.212|
 000054  4628              MOV      r0,r5
 000056  f7fffffe          BL       CLK_EnableModuleClock
-;;;1723     	CLK_SetModuleClock(TMR0_MODULE, CLK_CLKSEL1_TMR0_S_HCLK, MODULE_NoMsk);
+;;;1750     	CLK_SetModuleClock(TMR0_MODULE, CLK_CLKSEL1_TMR0_S_HCLK, MODULE_NoMsk);
 00005a  2101              MOVS     r1,#1
 00005c  2200              MOVS     r2,#0
 00005e  0249              LSLS     r1,r1,#9
 000060  4628              MOV      r0,r5
 000062  f7fffffe          BL       CLK_SetModuleClock
-;;;1724   
-;;;1725       CLK_EnableModuleClock(TMR1_MODULE);
+;;;1751   
+;;;1752       CLK_EnableModuleClock(TMR1_MODULE);
 000066  4d1c              LDR      r5,|L2.216|
 000068  4628              MOV      r0,r5
 00006a  f7fffffe          BL       CLK_EnableModuleClock
-;;;1726       CLK_SetModuleClock(TMR1_MODULE, CLK_CLKSEL1_TMR1_S_HCLK, MODULE_NoMsk);
+;;;1753       CLK_SetModuleClock(TMR1_MODULE, CLK_CLKSEL1_TMR1_S_HCLK, MODULE_NoMsk);
 00006e  2101              MOVS     r1,#1
 000070  2200              MOVS     r2,#0
 000072  0349              LSLS     r1,r1,#13
 000074  4628              MOV      r0,r5
 000076  f7fffffe          BL       CLK_SetModuleClock
-;;;1727   
-;;;1728       CLK_SetModuleClock(SPI0_MODULE, CLK_CLKSEL1_SPI0_S_HCLK, MODULE_NoMsk);
+;;;1754   
+;;;1755       CLK_SetModuleClock(SPI0_MODULE, CLK_CLKSEL1_SPI0_S_HCLK, MODULE_NoMsk);
 00007a  4d18              LDR      r5,|L2.220|
 00007c  2200              MOVS     r2,#0
 00007e  2110              MOVS     r1,#0x10
 000080  4628              MOV      r0,r5
 000082  f7fffffe          BL       CLK_SetModuleClock
-;;;1729       CLK_EnableModuleClock(SPI0_MODULE);
+;;;1756       CLK_EnableModuleClock(SPI0_MODULE);
 000086  4628              MOV      r0,r5
 000088  f7fffffe          BL       CLK_EnableModuleClock
-;;;1730   
-;;;1731       /* Set PB multi-function pins for UART0 RXD and TXD */
-;;;1732       SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk);
+;;;1757   
+;;;1758       /* Set PB multi-function pins for UART0 RXD and TXD */
+;;;1759       SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk);
 00008c  2005              MOVS     r0,#5
 00008e  0700              LSLS     r0,r0,#28
 000090  6b41              LDR      r1,[r0,#0x34]
 000092  0889              LSRS     r1,r1,#2
 000094  0089              LSLS     r1,r1,#2
 000096  6341              STR      r1,[r0,#0x34]
-;;;1733       SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD);
+;;;1760       SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD);
 000098  6b41              LDR      r1,[r0,#0x34]
 00009a  2203              MOVS     r2,#3
 00009c  4311              ORRS     r1,r1,r2
 00009e  6341              STR      r1,[r0,#0x34]
-;;;1734   
-;;;1735       /* Setup SPI0 multi-function pins */
-;;;1736       SYS->GPC_MFP &= ~(SYS_GPC_MFP_PC0_Msk | SYS_GPC_MFP_PC1_Msk | SYS_GPC_MFP_PC2_Msk | SYS_GPC_MFP_PC3_Msk);
+;;;1761   
+;;;1762       /* Setup SPI0 multi-function pins */
+;;;1763       SYS->GPC_MFP &= ~(SYS_GPC_MFP_PC0_Msk | SYS_GPC_MFP_PC1_Msk | SYS_GPC_MFP_PC2_Msk | SYS_GPC_MFP_PC3_Msk);
 0000a0  6b81              LDR      r1,[r0,#0x38]
 0000a2  0909              LSRS     r1,r1,#4
 0000a4  0109              LSLS     r1,r1,#4
 0000a6  6381              STR      r1,[r0,#0x38]
-;;;1737       SYS->GPC_MFP |= SYS_GPC_MFP_PC0_SPI0_SS0 | SYS_GPC_MFP_PC1_SPI0_CLK | SYS_GPC_MFP_PC2_SPI0_MISO0 | SYS_GPC_MFP_PC3_SPI0_MOSI0;
+;;;1764       SYS->GPC_MFP |= SYS_GPC_MFP_PC0_SPI0_SS0 | SYS_GPC_MFP_PC1_SPI0_CLK | SYS_GPC_MFP_PC2_SPI0_MISO0 | SYS_GPC_MFP_PC3_SPI0_MOSI0;
 0000a8  6b81              LDR      r1,[r0,#0x38]
 0000aa  220f              MOVS     r2,#0xf
 0000ac  4311              ORRS     r1,r1,r2
 0000ae  6381              STR      r1,[r0,#0x38]
-;;;1738       SYS->ALT_MFP &= ~(SYS_ALT_MFP_PC0_Msk | SYS_ALT_MFP_PC1_Msk | SYS_ALT_MFP_PC2_Msk | SYS_ALT_MFP_PC3_Msk);
+;;;1765       SYS->ALT_MFP &= ~(SYS_ALT_MFP_PC0_Msk | SYS_ALT_MFP_PC1_Msk | SYS_ALT_MFP_PC2_Msk | SYS_ALT_MFP_PC3_Msk);
 0000b0  4805              LDR      r0,|L2.200|
 0000b2  38c0              SUBS     r0,r0,#0xc0
 0000b4  6901              LDR      r1,[r0,#0x10]
 0000b6  6101              STR      r1,[r0,#0x10]
-;;;1739       SYS->ALT_MFP |= SYS_ALT_MFP_PC0_SPI0_SS0 | SYS_ALT_MFP_PC1_SPI0_CLK | SYS_ALT_MFP_PC2_SPI0_MISO0 | SYS_ALT_MFP_PC3_SPI0_MOSI0;
+;;;1766       SYS->ALT_MFP |= SYS_ALT_MFP_PC0_SPI0_SS0 | SYS_ALT_MFP_PC1_SPI0_CLK | SYS_ALT_MFP_PC2_SPI0_MISO0 | SYS_ALT_MFP_PC3_SPI0_MOSI0;
 0000b8  6901              LDR      r1,[r0,#0x10]
 0000ba  6101              STR      r1,[r0,#0x10]
-;;;1740   
-;;;1741       /* Update System Core Clock */
-;;;1742       SystemCoreClockUpdate();
+;;;1767   
+;;;1768       /* Update System Core Clock */
+;;;1769       SystemCoreClockUpdate();
 0000bc  f7fffffe          BL       SystemCoreClockUpdate
 0000c0  2000              MOVS     r0,#0
 0000c2  6020              STR      r0,[r4,#0]
-;;;1743   
-;;;1744       /* Lock protected registers */
-;;;1745       SYS_LockReg();
-;;;1746   }
+;;;1770   
+;;;1771       /* Lock protected registers */
+;;;1772       SYS_LockReg();
+;;;1773   }
 0000c4  bd70              POP      {r4-r6,pc}
-;;;1747   
+;;;1774   
                           ENDP
 
 0000c6  0000              DCW      0x0000
@@ -183,246 +183,338 @@
 
                           AREA ||i.StateMachine||, CODE, READONLY, ALIGN=2
 
+                          REQUIRE _printf_pre_padding
+                          REQUIRE _printf_percent
+                          REQUIRE _printf_widthprec
+                          REQUIRE _printf_d
+                          REQUIRE _printf_int_dec
                   StateMachine PROC
 ;;;1519   
 ;;;1520   void StateMachine()
-000000  b57f              PUSH     {r0-r6,lr}
+000000  b5f0              PUSH     {r4-r7,lr}
 ;;;1521   {
-;;;1522   	if (DemoState++ >= state_Max)
-000002  4944              LDR      r1,|L3.276|
-000004  7808              LDRB     r0,[r1,#0]  ; DemoState
-000006  1c42              ADDS     r2,r0,#1
-000008  700a              STRB     r2,[r1,#0]
-00000a  2835              CMP      r0,#0x35
-00000c  d301              BCC      |L3.18|
-;;;1523   	{
-;;;1524   		DemoState = state_Default+1;
-00000e  2001              MOVS     r0,#1
-000010  7008              STRB     r0,[r1,#0]
-                  |L3.18|
-000012  4840              LDR      r0,|L3.276|
-;;;1525   	}
-;;;1526   //	DemoState = 0;	//quick test
-;;;1527   
-;;;1528   	switch(DemoState)
-;;;1529   	{
-;;;1530   		case state_Rainbow:
-;;;1531   			getRainbow(50);
-;;;1532   			delay_ms(48);	
-;;;1533   			break;
-;;;1534   
-;;;1535   		case state_RainbowCycle:
-;;;1536   			getRainbowCycle(2 ,10);	//(5 , 1000);
-;;;1537   //			delay_ms(120);
-;;;1538   			break;
-;;;1539   
-;;;1540   		case state_TheaterChase:
-;;;1541   			getTheaterChase(30,colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
-000014  4d40              LDR      r5,|L3.280|
-000016  8940              LDRH     r0,[r0,#0xa]
-000018  7809              LDRB     r1,[r1,#0]            ;1528  ; DemoState
-00001a  0042              LSLS     r2,r0,#1
-00001c  1884              ADDS     r4,r0,r2
-00001e  1960              ADDS     r0,r4,r5
-000020  2907              CMP      r1,#7                 ;1528
-000022  d04c              BEQ      |L3.190|
-000024  dc07              BGT      |L3.54|
-000026  000b              MOVS     r3,r1                 ;1528
-000028  f7fffffe          BL       __ARM_common_switch8
-00002c  07112328          DCB      0x07,0x11,0x23,0x28
-000030  2d34393d          DCB      0x2d,0x34,0x39,0x3d
-000034  1100              DCB      0x11,0x00
-                  |L3.54|
-000036  2932              CMP      r1,#0x32              ;1528
-000038  d05d              BEQ      |L3.246|
-00003a  dc09              BGT      |L3.80|
-00003c  2908              CMP      r1,#8                 ;1528
-00003e  d045              BEQ      |L3.204|
-000040  2909              CMP      r1,#9                 ;1528
-000042  d04c              BEQ      |L3.222|
-000044  2931              CMP      r1,#0x31              ;1528
-000046  d102              BNE      |L3.78|
-;;;1542   //			getTheaterChase(60,0x00,0xFF,0x00);
-;;;1543   //			getTheaterChase(60,0x00,0x00,0xFF);
-;;;1544   //			delay_ms(120);
-;;;1545   
-;;;1546   			setLED_ColorIdxChange();
-;;;1547   			break;
-;;;1548   
-;;;1549   		case state_TheaterChaseRainbow:
-;;;1550   			getTheaterChaseRainbow(1);
-;;;1551   			delay_ms(240);
-;;;1552   			break;
+;;;1522   	uint16_t i = 0;
+;;;1523   
+;;;1524   	if (DemoState++ >= state_Max)
+000002  4e63              LDR      r6,|L3.400|
+000004  b085              SUB      sp,sp,#0x14           ;1521
+000006  7830              LDRB     r0,[r6,#0]  ; DemoState
+000008  2400              MOVS     r4,#0                 ;1522
+00000a  1c41              ADDS     r1,r0,#1
+00000c  7031              STRB     r1,[r6,#0]
+00000e  280e              CMP      r0,#0xe
+000010  d301              BCC      |L3.22|
+;;;1525   	{
+;;;1526   		DemoState = state_Default+1;
+000012  2001              MOVS     r0,#1
+000014  7030              STRB     r0,[r6,#0]
+                  |L3.22|
+;;;1527   	}
+;;;1528   //	DemoState = 0;	//quick test
+;;;1529   	printf("DemoState : %2d\r\n" , DemoState);
+000016  7831              LDRB     r1,[r6,#0]  ; DemoState
+000018  a05e              ADR      r0,|L3.404|
+00001a  f7fffffe          BL       __2printf
+;;;1530   
+;;;1531   	switch(DemoState)
+00001e  7830              LDRB     r0,[r6,#0]  ; DemoState
+;;;1532   	{
+;;;1533   		case state_Rainbow:
+;;;1534   			getRainbow(50);
+;;;1535   			delay_ms(48);	
+;;;1536   			break;
+;;;1537   
+;;;1538   		case state_RainbowCycle:
+;;;1539   			getRainbowCycle(2 ,10);	//(5 , 1000);
+;;;1540   //			delay_ms(120);
+;;;1541   			break;
+;;;1542   
+;;;1543   		case state_TheaterChase:
+;;;1544   			for (i = 0 ; i < 5; i++)
+;;;1545   			{
+;;;1546   				getTheaterChase(30,colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
+000020  4d61              LDR      r5,|L3.424|
+000022  0003              MOVS     r3,r0                 ;1531
+000024  f7fffffe          BL       __ARM_common_switch8
+000028  0e11080d          DCB      0x0e,0x11,0x08,0x0d
+00002c  1324292d          DCB      0x13,0x24,0x29,0x2d
+000030  44556874          DCB      0x44,0x55,0x68,0x74
+000034  788b9c11          DCB      0x78,0x8b,0x9c,0x11
+000038  2032              MOVS     r0,#0x32              ;1534
+00003a  f7fffffe          BL       getRainbow
+00003e  2030              MOVS     r0,#0x30              ;1535
+000040  e063              B        |L3.266|
+000042  210a              MOVS     r1,#0xa               ;1539
+000044  2002              MOVS     r0,#2                 ;1539
+000046  f7fffffe          BL       getRainbowCycle
+                  |L3.74|
+;;;1547   //				getTheaterChase(60,0x00,0xFF,0x00);
+;;;1548   //				getTheaterChase(60,0x00,0x00,0xFF);
+;;;1549   //				delay_ms(120);
+;;;1550   
+;;;1551   				setLED_ColorIdxChange();
+;;;1552   			}
 ;;;1553   
-;;;1554   		case state_RGBSequence:
-;;;1555   			getRGBSequence(60);
-;;;1556   
-;;;1557   			break;
-;;;1558   		
-;;;1559   		case state_AlternateColors:
-;;;1560   			getAlternateColors(128*500, 128, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2], colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
-;;;1561   
-;;;1562   			setLED_ColorIdxChange();
-;;;1563   			break;
-;;;1564   
-;;;1565   		case state_FullEmpty:
-;;;1566   			getFullEmpty(30, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
-;;;1567   
-;;;1568   			setLED_ColorIdxChange();
-;;;1569   			break;
-;;;1570   		
-;;;1571   		case state_PatternMove:
-;;;1572   			getPatternMove(50, 10, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
-;;;1573   
-;;;1574   			setLED_ColorIdxChange();
-;;;1575   			break;
-;;;1576   
-;;;1577   		#if defined (ENABLE_EXTRA_DEMO)
-;;;1578   		case state_ColorWheel:
-;;;1579   			getColorWheel(60);
-;;;1580   			
-;;;1581   			setLED_ColorWipe(0, 0, 0);
-;;;1582   			delay_ms(120);
+;;;1554   			break;
+;;;1555   
+;;;1556   		case state_TheaterChaseRainbow:
+;;;1557   			getTheaterChaseRainbow(1);
+;;;1558   			delay_ms(240);
+;;;1559   			break;
+;;;1560   
+;;;1561   		case state_RGBSequence:
+;;;1562   			getRGBSequence(60);
+;;;1563   
+;;;1564   			break;
+;;;1565   		
+;;;1566   		case state_AlternateColors:
+;;;1567   			for (i = 0 ; i < 5; i++)
+;;;1568   			{		
+;;;1569   				getAlternateColors(128*500, 128, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2], colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
+;;;1570   
+;;;1571   				setLED_ColorIdxChange();
+;;;1572   
+;;;1573   			}
+;;;1574   			break;
+;;;1575   
+;;;1576   		case state_FullEmpty:
+;;;1577   			for (i = 0 ; i < 5; i++)
+;;;1578   			{
+;;;1579   				getFullEmpty(30, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
+;;;1580   
+;;;1581   				setLED_ColorIdxChange();
+;;;1582   			}
 ;;;1583   			break;
-;;;1584   
-;;;1585   		case state_AllColors:
-;;;1586   			getAllColors(10);	
-000048  200a              MOVS     r0,#0xa
-00004a  f7fffffe          BL       getAllColors
-                  |L3.78|
-;;;1587   			break;
-;;;1588   		#endif	/*ENABLE_EXTRA_DEMO*/
+;;;1584   		
+;;;1585   		case state_PatternMove:
+;;;1586   			for (i = 0 ; i < 5; i++)
+;;;1587   			{
+;;;1588   				getPatternMove(50, 10, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
 ;;;1589   
-;;;1590   		case state_HeartBeat:
-;;;1591   			getHeartBeat(900, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
-;;;1592   
-;;;1593   			setLED_ColorIdxChange();
-;;;1594   			break;	
-;;;1595   
-;;;1596   		case state_CircularRing:
-;;;1597   			getCircularRing(30, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
-;;;1598   	
-;;;1599   			setLED_ColorIdxChange();
-;;;1600   			break;	
-;;;1601   		
-;;;1602   		case state_FromAToB:
-;;;1603   			getFromAToB(512, 16, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2], colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
-;;;1604   		
-;;;1605   			setLED_ColorIdxChange();
-;;;1606   			break;	
-;;;1607   			
-;;;1608   	}
-;;;1609   
-;;;1610   //	delay_ms(DEMO_MS);
-;;;1611   }
-00004e  bd7f              POP      {r0-r6,pc}
-                  |L3.80|
-000050  2933              CMP      r1,#0x33              ;1528
-000052  d058              BEQ      |L3.262|
-000054  2934              CMP      r1,#0x34              ;1528
-000056  d1fa              BNE      |L3.78|
-000058  7881              LDRB     r1,[r0,#2]            ;1603
-00005a  7843              LDRB     r3,[r0,#1]            ;1603
-00005c  5d2a              LDRB     r2,[r5,r4]            ;1603
-00005e  466e              MOV      r6,sp                 ;1603
-000060  c60e              STM      r6!,{r1-r3}           ;1603
-000062  9103              STR      r1,[sp,#0xc]          ;1603
-000064  2110              MOVS     r1,#0x10              ;1603
-000066  0148              LSLS     r0,r1,#5              ;1603
-000068  f7fffffe          BL       getFromAToB
-                  |L3.108|
-00006c  f7fffffe          BL       setLED_ColorIdxChange
-000070  bd7f              POP      {r0-r6,pc}
-000072  2032              MOVS     r0,#0x32              ;1531
-000074  f7fffffe          BL       getRainbow
-000078  2030              MOVS     r0,#0x30              ;1532
-00007a  e039              B        |L3.240|
-00007c  210a              MOVS     r1,#0xa               ;1536
-00007e  2002              MOVS     r0,#2                 ;1536
-000080  f7fffffe          BL       getRainbowCycle
-000084  bd7f              POP      {r0-r6,pc}
-000086  7883              LDRB     r3,[r0,#2]            ;1541
-000088  7842              LDRB     r2,[r0,#1]            ;1541
-00008a  5d29              LDRB     r1,[r5,r4]            ;1541
-00008c  201e              MOVS     r0,#0x1e              ;1541
-00008e  f7fffffe          BL       getTheaterChase
-000092  e7eb              B        |L3.108|
-000094  2001              MOVS     r0,#1                 ;1550
-000096  f7fffffe          BL       getTheaterChaseRainbow
-00009a  20f0              MOVS     r0,#0xf0              ;1551
-00009c  e028              B        |L3.240|
-00009e  203c              MOVS     r0,#0x3c              ;1555
-0000a0  f7fffffe          BL       getRGBSequence
-0000a4  bd7f              POP      {r0-r6,pc}
-0000a6  7881              LDRB     r1,[r0,#2]            ;1560
-0000a8  7843              LDRB     r3,[r0,#1]            ;1560
-0000aa  5d2a              LDRB     r2,[r5,r4]            ;1560
-0000ac  466e              MOV      r6,sp                 ;1560
-0000ae  c60e              STM      r6!,{r1-r3}           ;1560
-0000b0  9103              STR      r1,[sp,#0xc]          ;1560
-0000b2  207d              MOVS     r0,#0x7d              ;1560
-0000b4  2180              MOVS     r1,#0x80              ;1560
-0000b6  0240              LSLS     r0,r0,#9              ;1560
-0000b8  f7fffffe          BL       getAlternateColors
-0000bc  e7d6              B        |L3.108|
-                  |L3.190|
-0000be  7883              LDRB     r3,[r0,#2]            ;1566
-0000c0  7842              LDRB     r2,[r0,#1]            ;1566
-0000c2  5d29              LDRB     r1,[r5,r4]            ;1566
-0000c4  201e              MOVS     r0,#0x1e              ;1566
-0000c6  f7fffffe          BL       getFullEmpty
-0000ca  e7cf              B        |L3.108|
-                  |L3.204|
-0000cc  7881              LDRB     r1,[r0,#2]            ;1572
-0000ce  9100              STR      r1,[sp,#0]            ;1572
-0000d0  7843              LDRB     r3,[r0,#1]            ;1572
-0000d2  5d2a              LDRB     r2,[r5,r4]            ;1572
-0000d4  210a              MOVS     r1,#0xa               ;1572
-0000d6  2032              MOVS     r0,#0x32              ;1572
-0000d8  f7fffffe          BL       getPatternMove
-0000dc  e7c6              B        |L3.108|
-                  |L3.222|
-0000de  203c              MOVS     r0,#0x3c              ;1579
-0000e0  f7fffffe          BL       getColorWheel
-0000e4  2200              MOVS     r2,#0                 ;1581
-0000e6  4611              MOV      r1,r2                 ;1581
-0000e8  4610              MOV      r0,r2                 ;1581
-0000ea  f7fffffe          BL       setLED_ColorWipe
-0000ee  2078              MOVS     r0,#0x78              ;1582
-                  |L3.240|
-0000f0  f7fffffe          BL       delay_ms
-0000f4  bd7f              POP      {r0-r6,pc}
-                  |L3.246|
-0000f6  7883              LDRB     r3,[r0,#2]            ;1591
-0000f8  7842              LDRB     r2,[r0,#1]            ;1591
-0000fa  20e1              MOVS     r0,#0xe1              ;1591
-0000fc  5d29              LDRB     r1,[r5,r4]            ;1591
-0000fe  0080              LSLS     r0,r0,#2              ;1591
-000100  f7fffffe          BL       getHeartBeat
-000104  e7b2              B        |L3.108|
-                  |L3.262|
-000106  7883              LDRB     r3,[r0,#2]            ;1597
-000108  7842              LDRB     r2,[r0,#1]            ;1597
-00010a  5d29              LDRB     r1,[r5,r4]            ;1597
-00010c  201e              MOVS     r0,#0x1e              ;1597
-00010e  f7fffffe          BL       getCircularRing
-000112  e7ab              B        |L3.108|
-;;;1612   
+;;;1590   				setLED_ColorIdxChange();
+;;;1591   			}
+;;;1592   			break;
+;;;1593   
+;;;1594   		#if defined (ENABLE_EXTRA_DEMO)
+;;;1595   		case state_ColorWheel:
+;;;1596   			getColorWheel(60);
+;;;1597   			
+;;;1598   			setLED_ColorWipe(0, 0, 0);
+;;;1599   			delay_ms(120);
+;;;1600   			break;
+;;;1601   
+;;;1602   		case state_AllColors:
+;;;1603   			getAllColors(10);	
+;;;1604   			break;
+;;;1605   		#endif	/*ENABLE_EXTRA_DEMO*/
+;;;1606   
+;;;1607   		case state_HeartBeat:
+;;;1608   			for (i = 0 ; i < 5; i++)
+;;;1609   			{		
+;;;1610   				getHeartBeat(900, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
+;;;1611   
+;;;1612   				setLED_ColorIdxChange();
+;;;1613   			}
+;;;1614   			
+;;;1615   			break;	
+;;;1616   
+;;;1617   		case state_CircularRing:
+;;;1618   			for (i = 0 ; i < 16; i++)
+;;;1619   			{			
+;;;1620   				getCircularRing(30, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
+;;;1621   		
+;;;1622   				setLED_ColorIdxChange();
+;;;1623   			}
+;;;1624   			break;	
+;;;1625   		
+;;;1626   		case state_FromAToB:
+;;;1627   			for (i = 0 ; i < 256; i++)
+;;;1628   			{			
+;;;1629   				getFromAToB(512, 16, colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2], colorsFull[Coloridx][0], colorsFull[Coloridx][1], colorsFull[Coloridx][2]);
+;;;1630   			
+;;;1631   				setLED_ColorIdxChange();
+;;;1632   			}
+;;;1633   			break;	
+;;;1634   			
+;;;1635   	}
+;;;1636   
+;;;1637   //	delay_ms(DEMO_MS);
+;;;1638   }
+00004a  b005              ADD      sp,sp,#0x14
+00004c  bdf0              POP      {r4-r7,pc}
+                  |L3.78|
+00004e  8970              LDRH     r0,[r6,#0xa]          ;1546  ; Coloridx
+000050  0041              LSLS     r1,r0,#1              ;1546
+000052  1840              ADDS     r0,r0,r1              ;1546
+000054  1941              ADDS     r1,r0,r5              ;1546
+000056  788b              LDRB     r3,[r1,#2]            ;1546
+000058  784a              LDRB     r2,[r1,#1]            ;1546
+00005a  5c29              LDRB     r1,[r5,r0]            ;1546
+00005c  201e              MOVS     r0,#0x1e              ;1546
+00005e  f7fffffe          BL       getTheaterChase
+000062  f7fffffe          BL       setLED_ColorIdxChange
+000066  1c64              ADDS     r4,r4,#1              ;1551
+000068  b2a4              UXTH     r4,r4                 ;1544
+00006a  2c05              CMP      r4,#5                 ;1544
+00006c  d3ef              BCC      |L3.78|
+00006e  e7ec              B        |L3.74|
+000070  2001              MOVS     r0,#1                 ;1557
+000072  f7fffffe          BL       getTheaterChaseRainbow
+000076  20f0              MOVS     r0,#0xf0              ;1558
+000078  e047              B        |L3.266|
+00007a  203c              MOVS     r0,#0x3c              ;1562
+00007c  f7fffffe          BL       getRGBSequence
+000080  e7e3              B        |L3.74|
+000082  277d              MOVS     r7,#0x7d              ;1569
+000084  027f              LSLS     r7,r7,#9              ;1569
+                  |L3.134|
+000086  8970              LDRH     r0,[r6,#0xa]          ;1569  ; Coloridx
+000088  0041              LSLS     r1,r0,#1              ;1569
+00008a  1842              ADDS     r2,r0,r1              ;1569
+00008c  1953              ADDS     r3,r2,r5              ;1569
+00008e  7899              LDRB     r1,[r3,#2]            ;1569
+000090  785b              LDRB     r3,[r3,#1]            ;1569
+000092  5caa              LDRB     r2,[r5,r2]            ;1569
+000094  4668              MOV      r0,sp                 ;1569
+000096  c00e              STM      r0!,{r1-r3}           ;1569
+000098  9103              STR      r1,[sp,#0xc]          ;1569
+00009a  2180              MOVS     r1,#0x80              ;1569
+00009c  4638              MOV      r0,r7                 ;1569
+00009e  f7fffffe          BL       getAlternateColors
+0000a2  f7fffffe          BL       setLED_ColorIdxChange
+0000a6  1c64              ADDS     r4,r4,#1              ;1571
+0000a8  b2a4              UXTH     r4,r4                 ;1567
+0000aa  2c05              CMP      r4,#5                 ;1567
+0000ac  d3eb              BCC      |L3.134|
+0000ae  e7cc              B        |L3.74|
+                  |L3.176|
+0000b0  8970              LDRH     r0,[r6,#0xa]          ;1579  ; Coloridx
+0000b2  0041              LSLS     r1,r0,#1              ;1579
+0000b4  1840              ADDS     r0,r0,r1              ;1579
+0000b6  1941              ADDS     r1,r0,r5              ;1579
+0000b8  788b              LDRB     r3,[r1,#2]            ;1579
+0000ba  784a              LDRB     r2,[r1,#1]            ;1579
+0000bc  5c29              LDRB     r1,[r5,r0]            ;1579
+0000be  201e              MOVS     r0,#0x1e              ;1579
+0000c0  f7fffffe          BL       getFullEmpty
+0000c4  f7fffffe          BL       setLED_ColorIdxChange
+0000c8  1c64              ADDS     r4,r4,#1              ;1581
+0000ca  b2a4              UXTH     r4,r4                 ;1577
+0000cc  2c05              CMP      r4,#5                 ;1577
+0000ce  d3ef              BCC      |L3.176|
+0000d0  e7bb              B        |L3.74|
+                  |L3.210|
+0000d2  8970              LDRH     r0,[r6,#0xa]          ;1588  ; Coloridx
+0000d4  0041              LSLS     r1,r0,#1              ;1588
+0000d6  1840              ADDS     r0,r0,r1              ;1588
+0000d8  1941              ADDS     r1,r0,r5              ;1588
+0000da  788a              LDRB     r2,[r1,#2]            ;1588
+0000dc  9200              STR      r2,[sp,#0]            ;1588
+0000de  784b              LDRB     r3,[r1,#1]            ;1588
+0000e0  5c2a              LDRB     r2,[r5,r0]            ;1588
+0000e2  210a              MOVS     r1,#0xa               ;1588
+0000e4  2032              MOVS     r0,#0x32              ;1588
+0000e6  f7fffffe          BL       getPatternMove
+0000ea  f7fffffe          BL       setLED_ColorIdxChange
+0000ee  1c64              ADDS     r4,r4,#1              ;1590
+0000f0  b2a4              UXTH     r4,r4                 ;1586
+0000f2  2c05              CMP      r4,#5                 ;1586
+0000f4  d3ed              BCC      |L3.210|
+0000f6  e7a8              B        |L3.74|
+0000f8  203c              MOVS     r0,#0x3c              ;1596
+0000fa  f7fffffe          BL       getColorWheel
+0000fe  2200              MOVS     r2,#0                 ;1598
+000100  4611              MOV      r1,r2                 ;1598
+000102  4610              MOV      r0,r2                 ;1598
+000104  f7fffffe          BL       setLED_ColorWipe
+000108  2078              MOVS     r0,#0x78              ;1599
+                  |L3.266|
+00010a  f7fffffe          BL       delay_ms
+00010e  e79c              B        |L3.74|
+000110  200a              MOVS     r0,#0xa               ;1603
+000112  f7fffffe          BL       getAllColors
+000116  e798              B        |L3.74|
+000118  27e1              MOVS     r7,#0xe1              ;1610
+00011a  00bf              LSLS     r7,r7,#2              ;1610
+                  |L3.284|
+00011c  8970              LDRH     r0,[r6,#0xa]          ;1610  ; Coloridx
+00011e  0041              LSLS     r1,r0,#1              ;1610
+000120  1841              ADDS     r1,r0,r1              ;1610
+000122  1948              ADDS     r0,r1,r5              ;1610
+000124  7883              LDRB     r3,[r0,#2]            ;1610
+000126  7842              LDRB     r2,[r0,#1]            ;1610
+000128  5c69              LDRB     r1,[r5,r1]            ;1610
+00012a  4638              MOV      r0,r7                 ;1610
+00012c  f7fffffe          BL       getHeartBeat
+000130  f7fffffe          BL       setLED_ColorIdxChange
+000134  1c64              ADDS     r4,r4,#1              ;1612
+000136  b2a4              UXTH     r4,r4                 ;1608
+000138  2c05              CMP      r4,#5                 ;1608
+00013a  d3ef              BCC      |L3.284|
+00013c  e785              B        |L3.74|
+                  |L3.318|
+00013e  8970              LDRH     r0,[r6,#0xa]          ;1620  ; Coloridx
+000140  0041              LSLS     r1,r0,#1              ;1620
+000142  1840              ADDS     r0,r0,r1              ;1620
+000144  1941              ADDS     r1,r0,r5              ;1620
+000146  788b              LDRB     r3,[r1,#2]            ;1620
+000148  784a              LDRB     r2,[r1,#1]            ;1620
+00014a  5c29              LDRB     r1,[r5,r0]            ;1620
+00014c  201e              MOVS     r0,#0x1e              ;1620
+00014e  f7fffffe          BL       getCircularRing
+000152  f7fffffe          BL       setLED_ColorIdxChange
+000156  1c64              ADDS     r4,r4,#1              ;1622
+000158  b2a4              UXTH     r4,r4                 ;1618
+00015a  2c10              CMP      r4,#0x10              ;1618
+00015c  d3ef              BCC      |L3.318|
+00015e  e774              B        |L3.74|
+000160  2701              MOVS     r7,#1                 ;1629
+000162  027f              LSLS     r7,r7,#9              ;1629
+                  |L3.356|
+000164  8970              LDRH     r0,[r6,#0xa]          ;1629  ; Coloridx
+000166  0041              LSLS     r1,r0,#1              ;1629
+000168  1842              ADDS     r2,r0,r1              ;1629
+00016a  1953              ADDS     r3,r2,r5              ;1629
+00016c  7899              LDRB     r1,[r3,#2]            ;1629
+00016e  785b              LDRB     r3,[r3,#1]            ;1629
+000170  5caa              LDRB     r2,[r5,r2]            ;1629
+000172  4668              MOV      r0,sp                 ;1629
+000174  c00e              STM      r0!,{r1-r3}           ;1629
+000176  9103              STR      r1,[sp,#0xc]          ;1629
+000178  2110              MOVS     r1,#0x10              ;1629
+00017a  4638              MOV      r0,r7                 ;1629
+00017c  f7fffffe          BL       getFromAToB
+000180  f7fffffe          BL       setLED_ColorIdxChange
+000184  1c64              ADDS     r4,r4,#1              ;1631
+000186  b2a4              UXTH     r4,r4                 ;1627
+000188  2cff              CMP      r4,#0xff              ;1627
+00018a  d9eb              BLS      |L3.356|
+00018c  e75d              B        |L3.74|
+;;;1639   
                           ENDP
 
-                  |L3.276|
+00018e  0000              DCW      0x0000
+                  |L3.400|
                           DCD      ||.data||
-                  |L3.280|
+                  |L3.404|
+000194  44656d6f          DCB      "DemoState : %2d\r\n",0
+000198  53746174
+00019c  65203a20
+0001a0  2532640d
+0001a4  0a00    
+0001a6  00                DCB      0
+0001a7  00                DCB      0
+                  |L3.424|
                           DCD      ||.constdata||
 
                           AREA ||i.TIMER1_Init||, CODE, READONLY, ALIGN=2
 
                   TIMER1_Init PROC
-;;;1687   
-;;;1688   void TIMER1_Init(void)
+;;;1714   
+;;;1715   void TIMER1_Init(void)
 000000  b510              PUSH     {r4,lr}
-;;;1689   {
-;;;1690       TIMER_Open(TIMER1, TIMER_PERIODIC_MODE, 1000);
+;;;1716   {
+;;;1717       TIMER_Open(TIMER1, TIMER_PERIODIC_MODE, 1000);
 000002  4c0a              LDR      r4,|L4.44|
 000004  227d              MOVS     r2,#0x7d
 000006  2101              MOVS     r1,#1
@@ -441,12 +533,12 @@
 000022  0589              LSLS     r1,r1,#22
 000024  4308              ORRS     r0,r0,r1
 000026  6020              STR      r0,[r4,#0]
-;;;1691       TIMER_EnableInt(TIMER1);
-;;;1692       NVIC_EnableIRQ(TMR1_IRQn);	
-;;;1693       TIMER_Start(TIMER1);
-;;;1694   }
+;;;1718       TIMER_EnableInt(TIMER1);
+;;;1719       NVIC_EnableIRQ(TMR1_IRQn);	
+;;;1720       TIMER_Start(TIMER1);
+;;;1721   }
 000028  bd10              POP      {r4,pc}
-;;;1695   
+;;;1722   
                           ENDP
 
 00002a  0000              DCW      0x0000
@@ -465,25 +557,25 @@
                           REQUIRE _printf_int_dec
                           REQUIRE _printf_str
                   TMR1_IRQHandler PROC
-;;;1668   
-;;;1669   void TMR1_IRQHandler(void)
+;;;1695   
+;;;1696   void TMR1_IRQHandler(void)
 000000  b510              PUSH     {r4,lr}
 000002  490e              LDR      r1,|L5.60|
 000004  6888              LDR      r0,[r1,#8]
 000006  07c0              LSLS     r0,r0,#31
 000008  0fc0              LSRS     r0,r0,#31
-;;;1670   {
+;;;1697   {
 00000a  d016              BEQ      |L5.58|
 00000c  2201              MOVS     r2,#1
 00000e  608a              STR      r2,[r1,#8]
-;;;1671   	static uint16_t CNT = 0;
-;;;1672   	static uint32_t log = 0;
-;;;1673   	
-;;;1674       if(TIMER_GetIntFlag(TIMER1) == 1)
-;;;1675       {
-;;;1676           TIMER_ClearIntFlag(TIMER1);
-;;;1677   	
-;;;1678   		if (CNT++ >= 1000)
+;;;1698   	static uint16_t CNT = 0;
+;;;1699   	static uint32_t log = 0;
+;;;1700   	
+;;;1701       if(TIMER_GetIntFlag(TIMER1) == 1)
+;;;1702       {
+;;;1703           TIMER_ClearIntFlag(TIMER1);
+;;;1704   	
+;;;1705   		if (CNT++ >= 1000)
 000010  490b              LDR      r1,|L5.64|
 000012  8988              LDRH     r0,[r1,#0xc]  ; CNT
 000014  1c43              ADDS     r3,r0,#1
@@ -492,17 +584,17 @@
 00001a  00db              LSLS     r3,r3,#3
 00001c  4298              CMP      r0,r3
 00001e  d30c              BCC      |L5.58|
-;;;1679   		{		
-;;;1680   			CNT = 0;
+;;;1706   		{		
+;;;1707   			CNT = 0;
 000020  2000              MOVS     r0,#0
 000022  8188              STRH     r0,[r1,#0xc]
-;;;1681   			PB4 ^= 1;
+;;;1708   			PB4 ^= 1;
 000024  4807              LDR      r0,|L5.68|
 000026  6903              LDR      r3,[r0,#0x10]
 000028  4053              EORS     r3,r3,r2
 00002a  6103              STR      r3,[r0,#0x10]
-;;;1682   
-;;;1683   			printf("%s : %2d\r\n",__FUNCTION__ , log++);
+;;;1709   
+;;;1710   			printf("%s : %2d\r\n",__FUNCTION__ , log++);
 00002c  690a              LDR      r2,[r1,#0x10]  ; log
 00002e  1c50              ADDS     r0,r2,#1
 000030  6108              STR      r0,[r1,#0x10]  ; log
@@ -510,11 +602,11 @@
 000034  a005              ADR      r0,|L5.76|
 000036  f7fffffe          BL       __2printf
                   |L5.58|
-;;;1684   		}
-;;;1685       }
-;;;1686   }
+;;;1711   		}
+;;;1712       }
+;;;1713   }
 00003a  bd10              POP      {r4,pc}
-;;;1687   
+;;;1714   
                           ENDP
 
                   |L5.60|
@@ -534,12 +626,12 @@
                           AREA ||i.UART02_IRQHandler||, CODE, READONLY, ALIGN=2
 
                   UART02_IRQHandler PROC
-;;;1633   
-;;;1634   void UART02_IRQHandler(void)
+;;;1660   
+;;;1661   void UART02_IRQHandler(void)
 000000  b510              PUSH     {r4,lr}
-;;;1635   {
-;;;1636   
-;;;1637       if(UART_GET_INT_FLAG(UART0, UART_ISR_RDA_INT_Msk | UART_ISR_TOUT_INT_Msk))     /* UART receive data available flag */
+;;;1662   {
+;;;1663   
+;;;1664       if(UART_GET_INT_FLAG(UART0, UART_ISR_RDA_INT_Msk | UART_ISR_TOUT_INT_Msk))     /* UART receive data available flag */
 000002  4c0e              LDR      r4,|L6.60|
 000004  69e0              LDR      r0,[r4,#0x1c]
 000006  2111              MOVS     r1,#0x11
@@ -548,54 +640,54 @@
 00000c  d102              BNE      |L6.20|
 00000e  e004              B        |L6.26|
                   |L6.16|
-;;;1638       {
-;;;1639           while(UART_GET_RX_EMPTY(UART0) == 0)
-;;;1640           {
-;;;1641               UARTx_Process();
+;;;1665       {
+;;;1666           while(UART_GET_RX_EMPTY(UART0) == 0)
+;;;1667           {
+;;;1668               UARTx_Process();
 000010  f7fffffe          BL       UARTx_Process
                   |L6.20|
-000014  69a1              LDR      r1,[r4,#0x18]         ;1639
-000016  0449              LSLS     r1,r1,#17             ;1639
+000014  69a1              LDR      r1,[r4,#0x18]         ;1666
+000016  0449              LSLS     r1,r1,#17             ;1666
 000018  d5fa              BPL      |L6.16|
                   |L6.26|
-;;;1642           }
-;;;1643       }
-;;;1644   
-;;;1645   //    if(UART0->FIFOSTS & (UART_FIFOSTS_BIF_Msk | UART_FIFOSTS_FEF_Msk | UART_FIFOSTS_PEF_Msk | UART_FIFOSTS_RXOVIF_Msk))
-;;;1646   //    {
-;;;1647   //        UART_ClearIntFlag(UART0, (UART_ISR_RLS_INT_Msk| UART_ISR_BUF_ERR_INT_Msk));
-;;;1648   //    }	
-;;;1649   
-;;;1650   	if(UART_GET_INT_FLAG(UART0, UART_ISR_BUF_ERR_INT_Msk)) 
+;;;1669           }
+;;;1670       }
+;;;1671   
+;;;1672   //    if(UART0->FIFOSTS & (UART_FIFOSTS_BIF_Msk | UART_FIFOSTS_FEF_Msk | UART_FIFOSTS_PEF_Msk | UART_FIFOSTS_RXOVIF_Msk))
+;;;1673   //    {
+;;;1674   //        UART_ClearIntFlag(UART0, (UART_ISR_RLS_INT_Msk| UART_ISR_BUF_ERR_INT_Msk));
+;;;1675   //    }	
+;;;1676   
+;;;1677   	if(UART_GET_INT_FLAG(UART0, UART_ISR_BUF_ERR_INT_Msk)) 
 00001a  69e0              LDR      r0,[r4,#0x1c]
 00001c  0481              LSLS     r1,r0,#18
 00001e  d504              BPL      |L6.42|
-;;;1651   	{     
-;;;1652   		/* Buffer Error INT */	
-;;;1653   		UART_ClearIntFlag(UART0, UART_ISR_BUF_ERR_INT_Msk);	
+;;;1678   	{     
+;;;1679   		/* Buffer Error INT */	
+;;;1680   		UART_ClearIntFlag(UART0, UART_ISR_BUF_ERR_INT_Msk);	
 000020  2101              MOVS     r1,#1
 000022  0349              LSLS     r1,r1,#13
 000024  4620              MOV      r0,r4
 000026  f7fffffe          BL       UART_ClearIntFlag
                   |L6.42|
-;;;1654   	}
-;;;1655   
-;;;1656   	if(UART_GET_INT_FLAG(UART0, UART_ISR_RLS_INT_Msk)) 
+;;;1681   	}
+;;;1682   
+;;;1683   	if(UART_GET_INT_FLAG(UART0, UART_ISR_RLS_INT_Msk)) 
 00002a  69e1              LDR      r1,[r4,#0x1c]
 00002c  4620              MOV      r0,r4
 00002e  0549              LSLS     r1,r1,#21
 000030  d503              BPL      |L6.58|
-;;;1657   	{     
-;;;1658   		UART_ClearIntFlag(UART0, UART_ISR_RLS_INT_Msk);	
+;;;1684   	{     
+;;;1685   		UART_ClearIntFlag(UART0, UART_ISR_RLS_INT_Msk);	
 000032  2101              MOVS     r1,#1
 000034  0289              LSLS     r1,r1,#10
 000036  f7fffffe          BL       UART_ClearIntFlag
                   |L6.58|
-;;;1659   	}
-;;;1660   
-;;;1661   }
+;;;1686   	}
+;;;1687   
+;;;1688   }
 00003a  bd10              POP      {r4,pc}
-;;;1662   
+;;;1689   
                           ENDP
 
                   |L6.60|
@@ -609,39 +701,39 @@
                           REQUIRE _printf_d
                           REQUIRE _printf_int_dec
                   UARTx_Process PROC
-;;;1612   
-;;;1613   void UARTx_Process(void)
+;;;1639   
+;;;1640   void UARTx_Process(void)
 000000  b510              PUSH     {r4,lr}
-;;;1614   {
-;;;1615   	uint8_t res = 0;
-;;;1616   	res = UART_READ(UART0);
+;;;1641   {
+;;;1642   	uint8_t res = 0;
+;;;1643   	res = UART_READ(UART0);
 000002  480e              LDR      r0,|L7.60|
 000004  6800              LDR      r0,[r0,#0]
 000006  b2c0              UXTB     r0,r0
-;;;1617   
-;;;1618   	if (res == 'x' || res == 'X')
+;;;1644   
+;;;1645   	if (res == 'x' || res == 'X')
 000008  2878              CMP      r0,#0x78
 00000a  d007              BEQ      |L7.28|
 00000c  2858              CMP      r0,#0x58
 00000e  d005              BEQ      |L7.28|
-;;;1619   	{
-;;;1620   		NVIC_SystemReset();
-;;;1621   	}
-;;;1622   
-;;;1623   	if (res > 0x7F)
+;;;1646   	{
+;;;1647   		NVIC_SystemReset();
+;;;1648   	}
+;;;1649   
+;;;1650   	if (res > 0x7F)
 000010  287f              CMP      r0,#0x7f
 000012  d90b              BLS      |L7.44|
-;;;1624   	{
-;;;1625   		printf("invalid command\r\n");
+;;;1651   	{
+;;;1652   		printf("invalid command\r\n");
 000014  a00a              ADR      r0,|L7.64|
 000016  f7fffffe          BL       __2printf
-;;;1626   	}
-;;;1627   	else
-;;;1628   	{
-;;;1629   		DemoState = res - 0x30;
-;;;1630   		printf("DemoState = %2d\r\n" , DemoState);
-;;;1631   	}
-;;;1632   }
+;;;1653   	}
+;;;1654   	else
+;;;1655   	{
+;;;1656   		DemoState = res - 0x30;
+;;;1657   		printf("DemoState = %2d\r\n" , DemoState);
+;;;1658   	}
+;;;1659   }
 00001a  bd10              POP      {r4,pc}
                   |L7.28|
 00001c  f3bf8f4f          DSB      
@@ -653,13 +745,13 @@
 00002a  e7fe              B        |L7.42|
                   |L7.44|
 00002c  3830              SUBS     r0,r0,#0x30
-00002e  b2c1              UXTB     r1,r0                 ;1629
+00002e  b2c1              UXTB     r1,r0                 ;1656
 000030  480a              LDR      r0,|L7.92|
-000032  7001              STRB     r1,[r0,#0]            ;1629
+000032  7001              STRB     r1,[r0,#0]            ;1656
 000034  a00a              ADR      r0,|L7.96|
 000036  f7fffffe          BL       __2printf
 00003a  bd10              POP      {r4,pc}
-;;;1633   
+;;;1660   
                           ENDP
 
                   |L7.60|
@@ -2346,24 +2438,24 @@
                           REQUIRE _printf_d
                           REQUIRE _printf_int_dec
                   main PROC
-;;;1747   
-;;;1748   int main()
+;;;1774   
+;;;1775   int main()
 000000  f7fffffe          BL       SYS_Init
-;;;1749   {
-;;;1750       SYS_Init();
-;;;1751   
-;;;1752       SYS_ResetModule(UART0_RST);
+;;;1776   {
+;;;1777       SYS_Init();
+;;;1778   
+;;;1779       SYS_ResetModule(UART0_RST);
 000004  481b              LDR      r0,|L31.116|
 000006  f7fffffe          BL       SYS_ResetModule
-;;;1753   
-;;;1754       /* Configure UART0 and set UART0 baud rate */
-;;;1755       UART_Open(UART0, 115200);
+;;;1780   
+;;;1781       /* Configure UART0 and set UART0 baud rate */
+;;;1782       UART_Open(UART0, 115200);
 00000a  4c1b              LDR      r4,|L31.120|
 00000c  21e1              MOVS     r1,#0xe1
 00000e  0249              LSLS     r1,r1,#9
 000010  4620              MOV      r0,r4
 000012  f7fffffe          BL       UART_Open
-;;;1756       UART_EnableInt(UART0, UART_IER_RDA_IEN_Msk | UART_IER_TOUT_IEN_Msk);
+;;;1783       UART_EnableInt(UART0, UART_IER_RDA_IEN_Msk | UART_IER_TOUT_IEN_Msk);
 000016  2111              MOVS     r1,#0x11
 000018  4620              MOV      r0,r4
 00001a  f7fffffe          BL       UART_EnableInt
@@ -2371,58 +2463,58 @@
 000020  4916              LDR      r1,|L31.124|
 000022  0300              LSLS     r0,r0,#12
 000024  6008              STR      r0,[r1,#0]
-;;;1757       NVIC_EnableIRQ(UART02_IRQn);
-;;;1758   	
-;;;1759   	printf("\r\nCLK_GetCPUFreq : %8d\r\n",CLK_GetCPUFreq());
+;;;1784       NVIC_EnableIRQ(UART02_IRQn);
+;;;1785   	
+;;;1786   	printf("\r\nCLK_GetCPUFreq : %8d\r\n",CLK_GetCPUFreq());
 000026  f7fffffe          BL       CLK_GetCPUFreq
 00002a  4601              MOV      r1,r0
 00002c  a014              ADR      r0,|L31.128|
 00002e  f7fffffe          BL       __2printf
-;;;1760   	printf("CLK_GetHXTFreq : %8d\r\n",CLK_GetHXTFreq());
+;;;1787   	printf("CLK_GetHXTFreq : %8d\r\n",CLK_GetHXTFreq());
 000032  f7fffffe          BL       CLK_GetHXTFreq
 000036  4601              MOV      r1,r0
 000038  a018              ADR      r0,|L31.156|
 00003a  f7fffffe          BL       __2printf
-;;;1761   	printf("CLK_GetLXTFreq : %8d\r\n",CLK_GetLXTFreq());	
+;;;1788   	printf("CLK_GetLXTFreq : %8d\r\n",CLK_GetLXTFreq());	
 00003e  f7fffffe          BL       CLK_GetLXTFreq
 000042  4601              MOV      r1,r0
 000044  a01b              ADR      r0,|L31.180|
 000046  f7fffffe          BL       __2printf
-;;;1762   	printf("CLK_GetPCLK0Freq : %8d\r\n",CLK_GetHCLKFreq());
+;;;1789   	printf("CLK_GetPCLK0Freq : %8d\r\n",CLK_GetHCLKFreq());
 00004a  f7fffffe          BL       CLK_GetHCLKFreq
 00004e  4601              MOV      r1,r0
 000050  a01e              ADR      r0,|L31.204|
 000052  f7fffffe          BL       __2printf
-;;;1763   	printf("CLK_GetPCLK1Freq : %8d\r\n",CLK_GetPCLKFreq());	
+;;;1790   	printf("CLK_GetPCLK1Freq : %8d\r\n",CLK_GetPCLKFreq());	
 000056  f7fffffe          BL       CLK_GetPCLKFreq
 00005a  4601              MOV      r1,r0
 00005c  a022              ADR      r0,|L31.232|
 00005e  f7fffffe          BL       __2printf
-;;;1764   
-;;;1765   	GPIO_Init();
+;;;1791   
+;;;1792   	GPIO_Init();
 000062  f7fffffe          BL       GPIO_Init
-;;;1766   	TIMER1_Init();
+;;;1793   	TIMER1_Init();
 000066  f7fffffe          BL       TIMER1_Init
-;;;1767   
-;;;1768   	WS2812C_Initial();
+;;;1794   
+;;;1795   	WS2812C_Initial();
 00006a  f7fffffe          BL       WS2812C_Initial
                   |L31.110|
-;;;1769   
-;;;1770       while(1)
-;;;1771       {
-;;;1772   		#if defined (ENABLE_DEBUG_WS2812_PROTOCOL)
-;;;1773   		setLED_ColorWipe(0xFF, 0x00, 0x00);
-;;;1774   		delay_ms(1);
-;;;1775   		#else
-;;;1776   
-;;;1777   		StateMachine();
+;;;1796   
+;;;1797       while(1)
+;;;1798       {
+;;;1799   		#if defined (ENABLE_DEBUG_WS2812_PROTOCOL)
+;;;1800   		setLED_ColorWipe(0xFF, 0x00, 0x00);
+;;;1801   		delay_ms(1);
+;;;1802   		#else
+;;;1803   
+;;;1804   		StateMachine();
 00006e  f7fffffe          BL       StateMachine
 000072  e7fc              B        |L31.110|
-;;;1778   		#endif
-;;;1779   
-;;;1780       }
-;;;1781   }
-;;;1782   
+;;;1805   		#endif
+;;;1806   
+;;;1807       }
+;;;1808   }
+;;;1809   
                           ENDP
 
                   |L31.116|
@@ -3318,7 +3410,7 @@
                           AREA ||.data||, DATA, ALIGN=2
 
                   DemoState
-000000  31                DCB      0x31
+000000  01                DCB      0x01
                   flag
 000001  01                DCB      0x01
                   ||Red||
